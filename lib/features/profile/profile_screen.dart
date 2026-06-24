@@ -5,6 +5,8 @@ import '../../core/widgets/custom_button.dart';
 import '../../core/widgets/info_tile.dart';
 import '../auth/login_screen.dart';
 import '../wallet/wallet_screen.dart';
+import 'help_support_screen.dart';
+import 'settings_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -19,6 +21,18 @@ class ProfileScreen extends StatelessWidget {
   void _openWallet(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => const WalletScreen()),
+    );
+  }
+
+  void _openHelp(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => const HelpSupportScreen()),
+    );
+  }
+
+  void _openSettings(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => const SettingsScreen()),
     );
   }
 
@@ -140,13 +154,13 @@ class ProfileScreen extends StatelessWidget {
               _buildMenuTile(
                 icon: Icons.help_outline_rounded,
                 title: 'Help & Support',
-                onTap: () {},
+                onTap: () => _openHelp(context),
               ),
               const SizedBox(height: 12),
               _buildMenuTile(
                 icon: Icons.settings_outlined,
                 title: 'Settings',
-                onTap: () {},
+                onTap: () => _openSettings(context),
               ),
               const SizedBox(height: 28),
               CustomButton(
