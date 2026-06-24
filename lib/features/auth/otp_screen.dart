@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/widgets/custom_button.dart';
-import '../home/home_screen.dart';
+import '../verification/verification_screen.dart';
 
 class OtpScreen extends StatefulWidget {
   const OtpScreen({super.key, this.phone = ''});
@@ -41,7 +41,7 @@ class _OtpScreenState extends State<OtpScreen> {
   void _verifyOtp() {
     FocusScope.of(context).unfocus();
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const HomeScreen()),
+      MaterialPageRoute(builder: (_) => const VerificationScreen()),
     );
   }
 
