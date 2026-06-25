@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_colors.dart';
+import '../../core/widgets/glass_card.dart';
+import '../../core/widgets/section_header.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -23,125 +25,112 @@ class _SettingsScreenState extends State<SettingsScreen> {
         title: const Text('Settings'),
         leading: const BackButton(),
       ),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(20),
-          children: [
-            _buildSectionTitle('Notifications'),
-            const SizedBox(height: 12),
-            _buildSwitchCard(
-              icon: Icons.notifications_active_rounded,
-              title: 'Push Notifications',
-              subtitle: 'Receive app notifications',
-              value: _pushNotifications,
-              onChanged: (v) => setState(() => _pushNotifications = v),
-            ),
-            const SizedBox(height: 12),
-            _buildSwitchCard(
-              icon: Icons.directions_car_rounded,
-              title: 'Ride Alerts',
-              subtitle: 'New ride request sounds',
-              value: _rideAlerts,
-              iconColor: Colors.blueAccent,
-              onChanged: (v) => setState(() => _rideAlerts = v),
-            ),
-            const SizedBox(height: 12),
-            _buildSwitchCard(
-              icon: Icons.volume_up_rounded,
-              title: 'Sound Effects',
-              subtitle: 'In-app sounds and feedback',
-              value: _soundEffects,
-              iconColor: Colors.orangeAccent,
-              onChanged: (v) => setState(() => _soundEffects = v),
-            ),
-            const SizedBox(height: 28),
-            _buildSectionTitle('Privacy'),
-            const SizedBox(height: 12),
-            _buildSwitchCard(
-              icon: Icons.my_location_rounded,
-              title: 'Location Sharing',
-              subtitle: 'Share live location while online',
-              value: _locationSharing,
-              onChanged: (v) => setState(() => _locationSharing = v),
-            ),
-            const SizedBox(height: 28),
-            _buildSectionTitle('Appearance'),
-            const SizedBox(height: 12),
-            _buildSwitchCard(
-              icon: Icons.dark_mode_rounded,
-              title: 'Dark Mode',
-              subtitle: 'Use dark theme',
-              value: _darkMode,
-              iconColor: Colors.purpleAccent,
-              onChanged: (v) => setState(() => _darkMode = v),
-            ),
-            const SizedBox(height: 28),
-            _buildSectionTitle('General'),
-            const SizedBox(height: 12),
-            _buildNavCard(
-              icon: Icons.language_rounded,
-              title: 'Language',
-              trailing: 'English',
-            ),
-            const SizedBox(height: 12),
-            _buildNavCard(
-              icon: Icons.privacy_tip_rounded,
-              title: 'Privacy Policy',
-            ),
-            const SizedBox(height: 12),
-            _buildNavCard(
-              icon: Icons.description_rounded,
-              title: 'Terms & Conditions',
-            ),
-            const SizedBox(height: 12),
-            _buildNavCard(
-              icon: Icons.info_outline_rounded,
-              title: 'App Version',
-              trailing: 'v1.0.0',
-            ),
-          ],
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: AppColors.backgroundGradient,
         ),
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Text(
-      title,
-      style: const TextStyle(
-        color: AppColors.subText,
-        fontSize: 13,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0.5,
+        child: SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.all(20),
+            children: [
+              const SectionHeader(title: 'Notifications'),
+              const SizedBox(height: 12),
+              _buildSwitchCard(
+                icon: Icons.notifications_active_rounded,
+                color: AppColors.primary,
+                title: 'Push Notifications',
+                subtitle: 'Receive app notifications',
+                value: _pushNotifications,
+                onChanged: (v) => setState(() => _pushNotifications = v),
+              ),
+              const SizedBox(height: 12),
+              _buildSwitchCard(
+                icon: Icons.directions_car_rounded,
+                color: AppColors.accent,
+                title: 'Ride Alerts',
+                subtitle: 'New ride request sounds',
+                value: _rideAlerts,
+                onChanged: (v) => setState(() => _rideAlerts = v),
+              ),
+              const SizedBox(height: 12),
+              _buildSwitchCard(
+                icon: Icons.volume_up_rounded,
+                color: AppColors.warning,
+                title: 'Sound Effects',
+                subtitle: 'In-app sounds and feedback',
+                value: _soundEffects,
+                onChanged: (v) => setState(() => _soundEffects = v),
+              ),
+              const SizedBox(height: 26),
+              const SectionHeader(title: 'Privacy'),
+              const SizedBox(height: 12),
+              _buildSwitchCard(
+                icon: Icons.my_location_rounded,
+                color: AppColors.success,
+                title: 'Location Sharing',
+                subtitle: 'Share live location while online',
+                value: _locationSharing,
+                onChanged: (v) => setState(() => _locationSharing = v),
+              ),
+              const SizedBox(height: 26),
+              const SectionHeader(title: 'Appearance'),
+              const SizedBox(height: 12),
+              _buildSwitchCard(
+                icon: Icons.dark_mode_rounded,
+                color: AppColors.primarySoft,
+                title: 'Dark Mode',
+                subtitle: 'Use dark theme',
+                value: _darkMode,
+                onChanged: (v) => setState(() => _darkMode = v),
+              ),
+              const SizedBox(height: 26),
+              const SectionHeader(title: 'General'),
+              const SizedBox(height: 12),
+              GlassCard(
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                blur: false,
+                child: Column(
+                  children: [
+                    _navTile(Icons.language_rounded, 'Language', 'English'),
+                    _divider(),
+                    _navTile(Icons.privacy_tip_rounded, 'Privacy Policy', null),
+                    _divider(),
+                    _navTile(
+                        Icons.description_rounded, 'Terms & Conditions', null),
+                    _divider(),
+                    _navTile(Icons.info_outline_rounded, 'App Version',
+                        'v1.0.0'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 
   Widget _buildSwitchCard({
     required IconData icon,
+    required Color color,
     required String title,
     required String subtitle,
     required bool value,
     required ValueChanged<bool> onChanged,
-    Color? iconColor,
   }) {
-    final Color accent = iconColor ?? AppColors.primary;
-    return Container(
+    return GlassCard(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.cardBorder),
-      ),
+      blur: false,
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            width: 44,
+            height: 44,
             decoration: BoxDecoration(
-              color: accent.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(12),
+              color: color.withValues(alpha: 0.16),
+              borderRadius: BorderRadius.circular(13),
             ),
-            child: Icon(icon, color: accent, size: 20),
+            child: Icon(icon, color: color, size: 20),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -160,7 +149,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Text(
                   subtitle,
                   style: const TextStyle(
-                    color: AppColors.subText,
+                    color: AppColors.muted,
                     fontSize: 12,
                   ),
                 ),
@@ -173,26 +162,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildNavCard({
-    required IconData icon,
-    required String title,
-    String? trailing,
-  }) {
+  Widget _divider() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Divider(),
+    );
+  }
+
+  Widget _navTile(IconData icon, String title, String? trailing) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        borderRadius: BorderRadius.circular(16),
         onTap: () {},
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.cardBorder),
-          ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
           child: Row(
             children: [
-              Icon(icon, color: AppColors.primary, size: 22),
+              Icon(icon, color: AppColors.subText, size: 22),
               const SizedBox(width: 14),
               Text(
                 title,
@@ -207,14 +193,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Text(
                   trailing,
                   style: const TextStyle(
-                    color: AppColors.subText,
+                    color: AppColors.muted,
                     fontSize: 13,
                   ),
                 ),
               const SizedBox(width: 6),
               const Icon(
                 Icons.chevron_right_rounded,
-                color: AppColors.subText,
+                color: AppColors.muted,
               ),
             ],
           ),

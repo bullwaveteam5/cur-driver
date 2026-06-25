@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/widgets/custom_button.dart';
+import '../../core/widgets/floating_nav_bar.dart';
+import '../../core/widgets/glass_card.dart';
 import '../../core/widgets/info_tile.dart';
+import '../../core/widgets/section_header.dart';
 import '../../core/widgets/stat_card.dart';
 import '../earnings/earnings_screen.dart';
 import '../profile/profile_screen.dart';
@@ -21,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> pages = const [
+    const List<Widget> pages = [
       _HomeDashboard(),
       TripsHistoryScreen(),
       EarningsScreen(),
@@ -29,34 +32,24 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
 
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: pages,
+      extendBody: true,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: AppColors.backgroundGradient,
+        ),
+        child: IndexedStack(
+          index: _currentIndex,
+          children: pages,
+        ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: FloatingNavBar(
         currentIndex: _currentIndex,
         onTap: (index) => setState(() => _currentIndex = index),
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home_rounded),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history_outlined),
-            activeIcon: Icon(Icons.history_rounded),
-            label: 'Trips',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet_outlined),
-            activeIcon: Icon(Icons.account_balance_wallet_rounded),
-            label: 'Earnings',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline_rounded),
-            activeIcon: Icon(Icons.person_rounded),
-            label: 'Profile',
-          ),
+          NavItem(icon: Icons.grid_view_rounded, label: 'Home'),
+          NavItem(icon: Icons.receipt_long_rounded, label: 'Trips'),
+          NavItem(icon: Icons.bar_chart_rounded, label: 'Earnings'),
+          NavItem(icon: Icons.person_rounded, label: 'Profile'),
         ],
       ),
     );
@@ -82,19 +75,24 @@ class _HomeDashboardState extends State<_HomeDashboard> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      bottom: false,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+        padding: const EdgeInsets.fromLTRB(20, 12, 20, 120),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(),
             const SizedBox(height: 20),
-            _buildStatusBanner(),
-            const SizedBox(height: 20),
+            _buildOnlineCard(),
+            const SizedBox(height: 22),
+            const SectionHeader(title: "Today's Overview"),
+            const SizedBox(height: 14),
             _buildStatsGrid(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
+            const SectionHeader(title: 'Live Location'),
+            const SizedBox(height: 14),
             _buildMap(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
             _buildRideRequest(),
           ],
         ),
@@ -105,97 +103,165 @@ class _HomeDashboardState extends State<_HomeDashboard> {
   Widget _buildHeader() {
     return Row(
       children: [
-        const CircleAvatar(
-          radius: 26,
-          backgroundColor: AppColors.surface,
-          child: Icon(Icons.person_rounded, color: AppColors.primary, size: 30),
+        Container(
+          padding: const EdgeInsets.all(2.5),
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: AppColors.primaryGradient,
+          ),
+          child: const CircleAvatar(
+            radius: 26,
+            backgroundColor: AppColors.surface,
+            child: Icon(
+              Icons.person_rounded,
+              color: AppColors.primary,
+              size: 30,
+            ),
+          ),
         ),
         const SizedBox(width: 14),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(
-              'Welcome back',
-              style: TextStyle(color: AppColors.subText, fontSize: 13),
-            ),
-            SizedBox(height: 2),
-            Text(
-              'Rahul Sharma',
-              style: TextStyle(
-                color: AppColors.text,
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Welcome back,',
+                style: TextStyle(color: AppColors.subText, fontSize: 13),
               ),
-            ),
-          ],
+              const SizedBox(height: 2),
+              const Text(
+                'Rahul Sharma',
+                style: TextStyle(
+                  color: AppColors.text,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 3,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.warning.withValues(alpha: 0.16),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.star_rounded,
+                            color: AppColors.warning, size: 14),
+                        SizedBox(width: 3),
+                        Text(
+                          '4.9',
+                          style: TextStyle(
+                            color: AppColors.warning,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-        const Spacer(),
         Container(
           decoration: BoxDecoration(
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: AppColors.cardBorder),
+            border: Border.all(color: AppColors.glassBorder),
           ),
-          child: IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.notifications_none_rounded,
-              color: AppColors.text,
-            ),
+          child: Stack(
+            children: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.notifications_none_rounded,
+                  color: AppColors.text,
+                ),
+              ),
+              Positioned(
+                right: 10,
+                top: 10,
+                child: Container(
+                  width: 9,
+                  height: 9,
+                  decoration: BoxDecoration(
+                    color: AppColors.danger,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.surface, width: 1.5),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],
     );
   }
 
-  Widget _buildStatusBanner() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: _isOnline
-              ? AppColors.primary.withValues(alpha: 0.6)
-              : AppColors.cardBorder,
-        ),
-      ),
+  Widget _buildOnlineCard() {
+    return GlassCard(
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+      gradient: _isOnline ? AppColors.primaryGradient : null,
+      borderColor: _isOnline ? Colors.transparent : AppColors.glassBorder,
+      glow: _isOnline ? AppColors.primary : null,
+      blur: !_isOnline,
       child: Row(
         children: [
           Container(
-            width: 12,
-            height: 12,
+            width: 44,
+            height: 44,
             decoration: BoxDecoration(
-              color: _isOnline ? AppColors.primary : Colors.redAccent,
-              shape: BoxShape.circle,
+              color: Colors.white.withValues(alpha: _isOnline ? 0.2 : 0.06),
+              borderRadius: BorderRadius.circular(13),
+            ),
+            child: Icon(
+              _isOnline ? Icons.flash_on_rounded : Icons.flash_off_rounded,
+              color: _isOnline ? Colors.white : AppColors.muted,
             ),
           ),
-          const SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                _isOnline ? 'You are Online' : 'You are Offline',
-                style: const TextStyle(
-                  color: AppColors.text,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _isOnline ? 'You are Online' : 'You are Offline',
+                  style: TextStyle(
+                    color: _isOnline ? Colors.white : AppColors.text,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-              Text(
-                _isOnline
-                    ? 'Receiving ride requests'
-                    : 'Go online to start earning',
-                style: const TextStyle(
-                  color: AppColors.subText,
-                  fontSize: 12,
+                Text(
+                  _isOnline
+                      ? 'Receiving ride requests'
+                      : 'Go online to start earning',
+                  style: TextStyle(
+                    color: _isOnline ? Colors.white70 : AppColors.muted,
+                    fontSize: 12,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          const Spacer(),
           Switch(
             value: _isOnline,
+            thumbColor: const WidgetStatePropertyAll(Colors.white),
+            trackColor: WidgetStatePropertyAll(
+              _isOnline
+                  ? Colors.white.withValues(alpha: 0.35)
+                  : AppColors.surfaceAlt,
+            ),
+            trackOutlineColor:
+                const WidgetStatePropertyAll(Colors.transparent),
             onChanged: (value) => setState(() => _isOnline = value),
           ),
         ],
@@ -211,31 +277,36 @@ class _HomeDashboardState extends State<_HomeDashboard> {
         crossAxisCount: 2,
         crossAxisSpacing: 14,
         mainAxisSpacing: 14,
-        mainAxisExtent: 132,
+        mainAxisExtent: 142,
       ),
       children: const [
         StatCard(
           title: "Today's Earnings",
           value: '₹2,450',
           icon: Icons.currency_rupee_rounded,
+          gradient: AppColors.primaryGradient,
+          iconColor: AppColors.primary,
         ),
         StatCard(
-          title: 'Completed Trips',
+          title: 'Trips Completed',
           value: '18',
-          icon: Icons.check_circle_outline_rounded,
-          iconColor: Colors.blueAccent,
+          icon: Icons.check_circle_rounded,
+          gradient: AppColors.blueGradient,
+          iconColor: AppColors.accent,
         ),
         StatCard(
           title: 'Wallet Balance',
           value: '₹3,800',
           icon: Icons.account_balance_wallet_rounded,
-          iconColor: Colors.orangeAccent,
+          gradient: AppColors.successGradient,
+          iconColor: AppColors.success,
         ),
         StatCard(
           title: 'Online Time',
           value: '8h 24m',
-          icon: Icons.access_time_rounded,
-          iconColor: Colors.purpleAccent,
+          icon: Icons.timer_rounded,
+          gradient: AppColors.goldGradient,
+          iconColor: AppColors.warning,
         ),
       ],
     );
@@ -245,67 +316,132 @@ class _HomeDashboardState extends State<_HomeDashboard> {
     return Container(
       height: 220,
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.cardBorder),
-      ),
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: CustomPaint(
-                painter: _MapGridPainter(),
-              ),
-            ),
-          ),
-          const Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.location_on_rounded,
-                  color: AppColors.primary,
-                  size: 48,
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'Live Map',
-                  style: TextStyle(
-                    color: AppColors.text,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                Text(
-                  'Your current location',
-                  style: TextStyle(color: AppColors.subText, fontSize: 12),
-                ),
-              ],
-            ),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: AppColors.glassBorder),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.35),
+            blurRadius: 24,
+            offset: const Offset(0, 14),
           ),
         ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: CustomPaint(painter: _MapGridPainter()),
+            ),
+            Positioned.fill(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      AppColors.primary.withValues(alpha: 0.10),
+                      AppColors.background.withValues(alpha: 0.55),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              left: 40,
+              top: 50,
+              child: _mapPin(AppColors.accent, Icons.circle, 14),
+            ),
+            Positioned(
+              right: 50,
+              bottom: 56,
+              child: _mapPin(AppColors.danger, Icons.location_on_rounded, 22),
+            ),
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      gradient: AppColors.primaryGradient,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.primary.withValues(alpha: 0.6),
+                          blurRadius: 22,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.navigation_rounded,
+                      color: Colors.white,
+                      size: 26,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.surface.withValues(alpha: 0.85),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: AppColors.glassBorder),
+                    ),
+                    child: const Text(
+                      'You are here',
+                      style: TextStyle(
+                        color: AppColors.text,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildRideRequest() {
+  Widget _mapPin(Color color, IconData icon, double size) {
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.4)),
+        color: color.withValues(alpha: 0.2),
+        shape: BoxShape.circle,
       ),
+      child: Icon(icon, color: color, size: size),
+    );
+  }
+
+  Widget _buildRideRequest() {
+    return GlassCard(
+      glow: AppColors.primary,
+      borderColor: AppColors.primary.withValues(alpha: 0.4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(
-                Icons.notifications_active_rounded,
-                color: AppColors.primary,
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  gradient: AppColors.primaryGradient,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(
+                  Icons.notifications_active_rounded,
+                  color: Colors.white,
+                  size: 18,
+                ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 10),
               const Text(
                 'New Ride Request',
                 style: TextStyle(
@@ -317,22 +453,22 @@ class _HomeDashboardState extends State<_HomeDashboard> {
               const Spacer(),
               Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.15),
+                  gradient: AppColors.successGradient,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: const Text(
                   '₹420',
                   style: TextStyle(
-                    color: AppColors.primary,
+                    color: Colors.white,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 20),
           const InfoTile(
             icon: Icons.my_location_rounded,
             label: 'Pickup',
@@ -343,14 +479,14 @@ class _HomeDashboardState extends State<_HomeDashboard> {
             icon: Icons.location_on_rounded,
             label: 'Drop',
             value: 'Railway Station',
-            iconColor: Colors.redAccent,
+            iconColor: AppColors.danger,
           ),
           const SizedBox(height: 14),
           const InfoTile(
             icon: Icons.route_rounded,
             label: 'Distance',
             value: '12 km',
-            iconColor: Colors.blueAccent,
+            iconColor: AppColors.accent,
           ),
           const SizedBox(height: 20),
           CustomButton(
@@ -367,11 +503,11 @@ class _HomeDashboardState extends State<_HomeDashboard> {
 class _MapGridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint bgPaint = Paint()..color = const Color(0xFF181818);
+    final Paint bgPaint = Paint()..color = const Color(0xFF101A30);
     canvas.drawRect(Offset.zero & size, bgPaint);
 
     final Paint linePaint = Paint()
-      ..color = const Color(0xFF2A2A2A)
+      ..color = const Color(0xFF1C2A47)
       ..strokeWidth = 1;
 
     const double step = 28;
@@ -383,7 +519,7 @@ class _MapGridPainter extends CustomPainter {
     }
 
     final Paint roadPaint = Paint()
-      ..color = const Color(0xFF3A3A3A)
+      ..color = const Color(0xFF273A5E)
       ..strokeWidth = 6;
     canvas.drawLine(
       Offset(0, size.height * 0.7),

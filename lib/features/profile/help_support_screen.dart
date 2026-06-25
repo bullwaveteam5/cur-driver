@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/widgets/custom_button.dart';
+import '../../core/widgets/glass_card.dart';
+import '../../core/widgets/section_header.dart';
 
 class HelpSupportScreen extends StatelessWidget {
   const HelpSupportScreen({super.key});
@@ -31,11 +33,7 @@ class HelpSupportScreen extends StatelessWidget {
 
   void _showSnack(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: AppColors.primary,
-        behavior: SnackBarBehavior.floating,
-      ),
+      SnackBar(content: Text(message)),
     );
   }
 
@@ -46,101 +44,100 @@ class HelpSupportScreen extends StatelessWidget {
         title: const Text('Help & Support'),
         leading: const BackButton(),
       ),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(20),
-          children: [
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(22),
-              decoration: BoxDecoration(
-                gradient: AppColors.greenGradient,
-                borderRadius: BorderRadius.circular(22),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Icon(
-                    Icons.support_agent_rounded,
-                    color: Colors.white,
-                    size: 40,
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    'How can we help you?',
-                    style: TextStyle(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: AppColors.backgroundGradient,
+        ),
+        child: SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.all(20),
+            children: [
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  gradient: AppColors.primaryGradient,
+                  borderRadius: BorderRadius.circular(26),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withValues(alpha: 0.35),
+                      blurRadius: 26,
+                      offset: const Offset(0, 14),
+                    ),
+                  ],
+                ),
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.support_agent_rounded,
                       color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w800,
+                      size: 40,
+                    ),
+                    SizedBox(height: 12),
+                    Text(
+                      'How can we help you?',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    SizedBox(height: 6),
+                    Text(
+                      'Our support team is available 24/7',
+                      style: TextStyle(color: Colors.white70, fontSize: 13),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              const SectionHeader(title: 'Contact Us'),
+              const SizedBox(height: 14),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildContactCard(
+                      icon: Icons.call_rounded,
+                      title: 'Call Us',
+                      subtitle: '1800-123-456',
+                      color: AppColors.success,
+                      onTap: () => _showSnack(context, 'Calling support...'),
                     ),
                   ),
-                  SizedBox(height: 6),
-                  Text(
-                    'Our support team is available 24/7',
-                    style: TextStyle(color: Colors.white70, fontSize: 13),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: _buildContactCard(
+                      icon: Icons.chat_bubble_rounded,
+                      title: 'Live Chat',
+                      subtitle: 'Chat now',
+                      color: AppColors.accent,
+                      onTap: () => _showSnack(context, 'Opening live chat...'),
+                    ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 22),
-            const Text(
-              'Contact Us',
-              style: TextStyle(
-                color: AppColors.text,
-                fontSize: 17,
-                fontWeight: FontWeight.w800,
+              const SizedBox(height: 14),
+              _buildContactCard(
+                icon: Icons.email_rounded,
+                title: 'Email Support',
+                subtitle: 'support@wavego.com',
+                color: AppColors.warning,
+                fullWidth: true,
+                onTap: () => _showSnack(context, 'Opening email app...'),
               ),
-            ),
-            const SizedBox(height: 14),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildContactCard(
-                    icon: Icons.call_rounded,
-                    title: 'Call Us',
-                    subtitle: '1800-123-456',
-                    onTap: () => _showSnack(context, 'Calling support...'),
-                  ),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: _buildContactCard(
-                    icon: Icons.chat_bubble_rounded,
-                    title: 'Live Chat',
-                    subtitle: 'Chat now',
-                    iconColor: Colors.blueAccent,
-                    onTap: () => _showSnack(context, 'Opening live chat...'),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 14),
-            _buildContactCard(
-              icon: Icons.email_rounded,
-              title: 'Email Support',
-              subtitle: 'support@wavego.com',
-              iconColor: Colors.orangeAccent,
-              fullWidth: true,
-              onTap: () => _showSnack(context, 'Opening email app...'),
-            ),
-            const SizedBox(height: 28),
-            const Text(
-              'Frequently Asked Questions',
-              style: TextStyle(
-                color: AppColors.text,
-                fontSize: 17,
-                fontWeight: FontWeight.w800,
+              const SizedBox(height: 26),
+              const SectionHeader(title: 'Frequently Asked'),
+              const SizedBox(height: 14),
+              ..._faqs.map(_buildFaqTile),
+              const SizedBox(height: 16),
+              CustomButton(
+                label: 'Raise a Ticket',
+                icon: Icons.confirmation_number_rounded,
+                onPressed: () => _showSnack(context, 'Support ticket created'),
               ),
-            ),
-            const SizedBox(height: 14),
-            ..._faqs.map(_buildFaqTile),
-            const SizedBox(height: 16),
-            CustomButton(
-              label: 'Raise a Ticket',
-              icon: Icons.confirmation_number_rounded,
-              onPressed: () => _showSnack(context, 'Support ticket created'),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -150,103 +147,92 @@ class HelpSupportScreen extends StatelessWidget {
     required IconData icon,
     required String title,
     required String subtitle,
+    required Color color,
     required VoidCallback onTap,
-    Color? iconColor,
     bool fullWidth = false,
   }) {
-    final Color accent = iconColor ?? AppColors.primary;
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.cardBorder),
+    return GlassCard(
+      padding: const EdgeInsets.all(16),
+      blur: false,
+      onTap: onTap,
+      child: Row(
+        mainAxisAlignment:
+            fullWidth ? MainAxisAlignment.start : MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 42,
+            height: 42,
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.16),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: color, size: 20),
           ),
-          child: Row(
-            mainAxisAlignment:
-                fullWidth ? MainAxisAlignment.start : MainAxisAlignment.center,
+          const SizedBox(width: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: accent.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(12),
+              Text(
+                title,
+                style: const TextStyle(
+                  color: AppColors.text,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
                 ),
-                child: Icon(icon, color: accent, size: 20),
               ),
-              const SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      color: AppColors.text,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    subtitle,
-                    style: const TextStyle(
-                      color: AppColors.subText,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
+              const SizedBox(height: 2),
+              Text(
+                subtitle,
+                style: const TextStyle(
+                  color: AppColors.muted,
+                  fontSize: 12,
+                ),
               ),
             ],
           ),
-        ),
+        ],
       ),
     );
   }
 
   Widget _buildFaqTile(Map<String, String> faq) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.cardBorder),
-      ),
-      child: Theme(
-        data: ThemeData(
-          dividerColor: Colors.transparent,
-          colorScheme: const ColorScheme.dark(primary: AppColors.primary),
-        ),
-        child: ExpansionTile(
-          tilePadding: const EdgeInsets.symmetric(horizontal: 16),
-          childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-          iconColor: AppColors.primary,
-          collapsedIconColor: AppColors.subText,
-          title: Text(
-            faq['q'] ?? '',
-            style: const TextStyle(
-              color: AppColors.text,
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-            ),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: GlassCard(
+        padding: EdgeInsets.zero,
+        blur: false,
+        child: Theme(
+          data: ThemeData(
+            dividerColor: Colors.transparent,
+            colorScheme: const ColorScheme.dark(primary: AppColors.primary),
           ),
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                faq['a'] ?? '',
-                style: const TextStyle(
-                  color: AppColors.subText,
-                  fontSize: 13,
-                  height: 1.4,
-                ),
+          child: ExpansionTile(
+            tilePadding: const EdgeInsets.symmetric(horizontal: 16),
+            childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            iconColor: AppColors.primary,
+            collapsedIconColor: AppColors.muted,
+            title: Text(
+              faq['q'] ?? '',
+              style: const TextStyle(
+                color: AppColors.text,
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
               ),
             ),
-          ],
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  faq['a'] ?? '',
+                  style: const TextStyle(
+                    color: AppColors.subText,
+                    fontSize: 13,
+                    height: 1.4,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

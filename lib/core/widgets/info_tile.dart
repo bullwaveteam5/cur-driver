@@ -20,19 +20,18 @@ class InfoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color accent = iconColor ?? AppColors.primary;
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(10),
+          width: 44,
+          height: 44,
           decoration: BoxDecoration(
-            color: (iconColor ?? AppColors.primary).withValues(alpha: 0.15),
-            borderRadius: BorderRadius.circular(12),
+            color: accent.withValues(alpha: 0.16),
+            borderRadius: BorderRadius.circular(13),
+            border: Border.all(color: accent.withValues(alpha: 0.25)),
           ),
-          child: Icon(
-            icon,
-            color: iconColor ?? AppColors.primary,
-            size: 20,
-          ),
+          child: Icon(icon, color: accent, size: 20),
         ),
         const SizedBox(width: 14),
         Expanded(
@@ -42,8 +41,9 @@ class InfoTile extends StatelessWidget {
               Text(
                 label,
                 style: const TextStyle(
-                  color: AppColors.subText,
-                  fontSize: 13,
+                  color: AppColors.muted,
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 3),
@@ -52,7 +52,7 @@ class InfoTile extends StatelessWidget {
                 style: TextStyle(
                   color: valueColor ?? AppColors.text,
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ],

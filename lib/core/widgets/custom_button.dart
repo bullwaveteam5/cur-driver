@@ -9,6 +9,7 @@ class CustomButton extends StatelessWidget {
     required this.onPressed,
     this.icon,
     this.outlined = false,
+    this.gradient,
     this.color,
     this.expanded = true,
   });
@@ -17,6 +18,7 @@ class CustomButton extends StatelessWidget {
   final VoidCallback onPressed;
   final IconData? icon;
   final bool outlined;
+  final Gradient? gradient;
   final Color? color;
   final bool expanded;
 
@@ -35,31 +37,49 @@ class CustomButton extends StatelessWidget {
     );
 
     if (outlined) {
+      final Color c = color ?? AppColors.text;
       return OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
-          foregroundColor: color ?? AppColors.primary,
-          side: BorderSide(color: color ?? AppColors.primary, width: 1.4),
-          minimumSize: const Size.fromHeight(54),
+          foregroundColor: c,
+          side: BorderSide(color: c.withValues(alpha: 0.45), width: 1.4),
+          minimumSize: const Size.fromHeight(56),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(18),
           ),
         ),
         child: child,
       );
     }
 
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color ?? AppColors.primary,
-        foregroundColor: Colors.white,
-        minimumSize: const Size.fromHeight(54),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+    final Gradient grad = gradient ?? AppColors.buttonGradient;
+    final Color glowColor = color ?? AppColors.primary;
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: color == null ? grad : null,
+        color: color,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: glowColor.withValues(alpha: 0.40),
+            blurRadius: 22,
+            offset: const Offset(0, 10),
+          ),
+        ],
       ),
-      child: child,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          foregroundColor: Colors.white,
+          minimumSize: const Size.fromHeight(56),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
+        ),
+        child: child,
+      ),
     );
   }
 }

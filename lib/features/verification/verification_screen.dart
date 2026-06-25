@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/widgets/custom_button.dart';
+import '../../core/widgets/glass_card.dart';
 import '../home/home_screen.dart';
 
 enum DocStatus { verified, pending, upload }
@@ -68,15 +69,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   void _onDocTap(_DocItem doc) {
     if (doc.status == DocStatus.verified) return;
-    setState(() {
-      doc.status = DocStatus.verified;
-    });
+    setState(() => doc.status = DocStatus.verified);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${doc.title} verified'),
-        backgroundColor: AppColors.primary,
-        behavior: SnackBarBehavior.floating,
-      ),
+      SnackBar(content: Text('${doc.title} verified')),
     );
   }
 
@@ -91,41 +86,46 @@ class _VerificationScreenState extends State<VerificationScreen> {
   Widget build(BuildContext context) {
     final double progress = _verifiedCount / _docs.length;
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildHeader(progress),
-                    const SizedBox(height: 24),
-                    const Text(
-                      'Required Documents',
-                      style: TextStyle(
-                        color: AppColors.text,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w800,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: AppColors.backgroundGradient,
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildHeader(progress),
+                      const SizedBox(height: 24),
+                      const Text(
+                        'Required Documents',
+                        style: TextStyle(
+                          color: AppColors.text,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 6),
-                    const Text(
-                      'Tap a document to upload and verify it',
-                      style: TextStyle(
-                        color: AppColors.subText,
-                        fontSize: 13,
+                      const SizedBox(height: 6),
+                      const Text(
+                        'Tap a document to upload and verify it',
+                        style: TextStyle(
+                          color: AppColors.subText,
+                          fontSize: 13,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    ..._docs.map(_buildDocTile),
-                  ],
+                      const SizedBox(height: 16),
+                      ..._docs.map(_buildDocTile),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            _buildBottomBar(),
-          ],
+              _buildBottomBar(),
+            ],
+          ),
         ),
       ),
     );
@@ -136,8 +136,15 @@ class _VerificationScreenState extends State<VerificationScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        gradient: AppColors.greenGradient,
-        borderRadius: BorderRadius.circular(24),
+        gradient: AppColors.primaryGradient,
+        borderRadius: BorderRadius.circular(26),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.35),
+            blurRadius: 26,
+            offset: const Offset(0, 14),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,10 +164,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 ),
               ),
               const SizedBox(width: 14),
-              Expanded(
+              const Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
                       'Partner Verification',
                       style: TextStyle(
@@ -217,63 +224,53 @@ class _VerificationScreenState extends State<VerificationScreen> {
   }
 
   Widget _buildDocTile(_DocItem doc) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(16),
-          onTap: () => _onDocTap(doc),
-          child: Container(
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.cardBorder),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(11),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(
-                    doc.icon,
-                    color: AppColors.primary,
-                    size: 22,
-                  ),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: GlassCard(
+        padding: const EdgeInsets.all(14),
+        blur: false,
+        onTap: () => _onDocTap(doc),
+        child: Row(
+          children: [
+            Container(
+              width: 46,
+              height: 46,
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.16),
+                borderRadius: BorderRadius.circular(13),
+                border: Border.all(
+                  color: AppColors.primary.withValues(alpha: 0.25),
                 ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        doc.title,
-                        style: const TextStyle(
-                          color: AppColors.text,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        doc.subtitle,
-                        style: const TextStyle(
-                          color: AppColors.subText,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 10),
-                _buildStatusChip(doc.status),
-              ],
+              ),
+              child: Icon(doc.icon, color: AppColors.primary, size: 22),
             ),
-          ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    doc.title,
+                    style: const TextStyle(
+                      color: AppColors.text,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    doc.subtitle,
+                    style: const TextStyle(
+                      color: AppColors.muted,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 10),
+            _buildStatusChip(doc.status),
+          ],
         ),
       ),
     );
@@ -285,17 +282,17 @@ class _VerificationScreenState extends State<VerificationScreen> {
     late final IconData icon;
     switch (status) {
       case DocStatus.verified:
-        color = AppColors.primary;
+        color = AppColors.success;
         label = 'Verified';
         icon = Icons.check_circle_rounded;
         break;
       case DocStatus.pending:
-        color = Colors.orangeAccent;
+        color = AppColors.warning;
         label = 'Pending';
         icon = Icons.hourglass_top_rounded;
         break;
       case DocStatus.upload:
-        color = Colors.blueAccent;
+        color = AppColors.accent;
         label = 'Upload';
         icon = Icons.upload_rounded;
         break;
@@ -303,8 +300,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.15),
+        color: color.withValues(alpha: 0.16),
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -326,24 +324,22 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   Widget _buildBottomBar() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
+      padding: const EdgeInsets.fromLTRB(20, 14, 20, 16),
       decoration: const BoxDecoration(
-        color: AppColors.background,
-        border: Border(
-          top: BorderSide(color: AppColors.cardBorder),
-        ),
+        color: AppColors.backgroundAlt,
+        border: Border(top: BorderSide(color: AppColors.glassBorder)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (!_allVerified)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 10),
               child: Row(
-                children: const [
+                children: [
                   Icon(
                     Icons.info_outline_rounded,
-                    color: Colors.orangeAccent,
+                    color: AppColors.warning,
                     size: 16,
                   ),
                   SizedBox(width: 6),
@@ -351,7 +347,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     child: Text(
                       'You can continue and complete pending docs later',
                       style: TextStyle(
-                        color: AppColors.subText,
+                        color: AppColors.muted,
                         fontSize: 12,
                       ),
                     ),
