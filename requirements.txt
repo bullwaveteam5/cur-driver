@@ -1,0 +1,318 @@
+# =============================================================================
+# WaveGo Driver — Flutter Application Requirements
+# =============================================================================
+# Project   : wavego_driver
+# Version   : 1.0.0+1
+# Platform  : Flutter (iOS, Android, Web, macOS, Windows, Linux)
+# Purpose   : Complete setup & dependency list for clone, build, run, GitHub
+# =============================================================================
+#
+# NOTE: Flutter uses pubspec.yaml for Dart packages (like requirements.txt).
+#       This file documents EVERYTHING needed to download, develop, and upload.
+#       Always commit pubspec.yaml + pubspec.lock to GitHub.
+#
+# =============================================================================
+# 1. SYSTEM REQUIREMENTS (DEVELOPER MACHINE)
+# =============================================================================
+#
+# Operating System (any one or more):
+#   - macOS 12+     (required for iOS builds & App Store)
+#   - Windows 10+   (Android / Web / Windows desktop)
+#   - Linux 64-bit  (Android / Web / Linux desktop)
+#
+# Hardware (minimum recommended):
+#   - RAM       : 8 GB (16 GB recommended)
+#   - Disk      : 10 GB free (Flutter SDK + Android SDK + Xcode)
+#   - CPU       : 64-bit processor
+#
+# Internet:
+#   - Required for flutter pub get, SDK download, device testing
+#
+# =============================================================================
+# 2. CORE SDK REQUIREMENTS (MANDATORY)
+# =============================================================================
+#
+# Flutter SDK  : >=3.44.0 stable (tested with 3.44.2)
+# Dart SDK     : >=3.12.2 <4.0.0
+# Git          : >=2.30 (for clone, push to GitHub)
+#
+# Install Flutter:
+#   https://docs.flutter.dev/get-started/install
+#
+# Verify installation:
+#   flutter --version
+#   flutter doctor -v
+#
+# =============================================================================
+# 3. PLATFORM-SPECIFIC TOOLS (INSTALL AS NEEDED)
+# =============================================================================
+#
+# --- Android (required for Android APK/AAB) ---
+#   - Android Studio        : latest stable
+#   - Android SDK           : API 21+ (minSdk), target latest stable
+#   - Android SDK Command-line Tools
+#   - Android SDK Platform-Tools
+#   - Android SDK Build-Tools
+#   - Java JDK              : 17 (bundled with Android Studio)
+#   - Gradle                : managed by Flutter/Android project
+#   - Kotlin                : managed by Android Gradle plugin
+#   - Accept licenses       : flutter doctor --android-licenses
+#
+# --- iOS (required for iPhone/iPad — macOS only) ---
+#   - Xcode                 : 15+ (match your iOS simulator/device)
+#   - Xcode Command Line Tools : xcode-select --install
+#   - CocoaPods             : sudo gem install cocoapods
+#   - iOS Simulator or physical iPhone
+#
+# --- Web (optional) ---
+#   - Chrome browser (for flutter run -d chrome)
+#
+# --- macOS Desktop (optional) ---
+#   - Xcode + CocoaPods
+#
+# --- Windows Desktop (optional) ---
+#   - Visual Studio 2022 with "Desktop development with C++"
+#   - Windows 10 SDK
+#
+# --- Linux Desktop (optional) ---
+#   - clang, cmake, ninja-build, pkg-config
+#   - GTK 3 development libraries
+#
+# =============================================================================
+# 4. IDE & EDITOR (RECOMMENDED)
+# =============================================================================
+#
+#   - VS Code + Flutter extension + Dart extension
+#   - OR Android Studio + Flutter plugin + Dart plugin
+#   - OR Cursor IDE with Flutter/Dart support
+#
+# =============================================================================
+# 5. GITHUB / VERSION CONTROL REQUIREMENTS
+# =============================================================================
+#
+# Required on GitHub repository:
+#   - pubspec.yaml          (package manifest — MUST commit)
+#   - pubspec.lock          (locked versions — MUST commit for reproducible builds)
+#   - lib/                  (all Dart source code)
+#   - android/              (Android native project)
+#   - ios/                  (iOS native project)
+#   - web/                  (Web project)
+#   - macos/                (macOS desktop project)
+#   - windows/              (Windows desktop project)
+#   - linux/                (Linux desktop project)
+#   - test/                 (widget/unit tests)
+#   - analysis_options.yaml (lint rules)
+#   - README.md             (project documentation)
+#   - .gitignore            (exclude build artifacts)
+#   - requirements.txt      (this file)
+#
+# Do NOT commit (already in .gitignore):
+#   - build/
+#   - .dart_tool/
+#   - .pub/
+#   - .pub-cache/
+#   - android/app/debug, profile, release/
+#   - ios/Flutter/.last_build_id
+#   - .idea/, *.iml
+#   - .DS_Store
+#
+# Secrets — NEVER commit:
+#   - .env files with API keys
+#   - google-services.json (Firebase) — if added later
+#   - GoogleService-Info.plist — if added later
+#   - keystore files (.jks, .keystore)
+#   - signing certificates (.p12, .pem)
+#
+# =============================================================================
+# 6. DIRECT DART / FLUTTER PACKAGES (from pubspec.yaml)
+# =============================================================================
+#
+# Runtime dependencies:
+flutter>=3.44.0
+dart>=3.12.2,<4.0.0
+cupertino_icons>=1.0.8
+url_launcher>=6.3.1
+#
+# Dev dependencies:
+flutter_test>=3.44.0
+flutter_lints>=6.0.0
+#
+# =============================================================================
+# 7. LOCKED PACKAGE VERSIONS (from pubspec.lock — commit this file!)
+# =============================================================================
+#
+# Direct:
+#   cupertino_icons==1.0.9
+#   url_launcher==6.3.2
+#   flutter_lints==6.0.0
+#
+# Transitive (auto-installed via flutter pub get):
+#   async==2.13.1
+#   boolean_selector==2.1.2
+#   characters==1.4.1
+#   clock==1.1.2
+#   collection==1.19.1
+#   fake_async==1.3.3
+#   leak_tracker==11.0.2
+#   leak_tracker_flutter_testing==3.0.10
+#   leak_tracker_testing==3.0.2
+#   lints==6.1.0
+#   matcher==0.12.19
+#   material_color_utilities==0.13.0
+#   meta==1.18.0
+#   path==1.9.1
+#   plugin_platform_interface==2.1.8
+#   source_span==1.10.2
+#   stack_trace==1.12.1
+#   stream_channel==2.1.4
+#   string_scanner==1.4.1
+#   term_glyph==1.2.2
+#   test_api==0.7.11
+#   url_launcher_android==6.3.32
+#   url_launcher_ios==6.4.1
+#   url_launcher_linux==3.2.2
+#   url_launcher_macos==3.2.5
+#   url_launcher_platform_interface==2.3.2
+#   url_launcher_web==2.4.3
+#   url_launcher_windows==3.1.5
+#   vector_math==2.2.0
+#   vm_service==15.2.0
+#   web==1.1.1
+#
+# =============================================================================
+# 8. NATIVE PERMISSIONS (url_launcher — phone, WhatsApp, email)
+# =============================================================================
+#
+# Android (AndroidManifest.xml — queries for external apps):
+#   - tel: scheme (phone calls)
+#   - https: wa.me (WhatsApp)
+#   - mailto: (email)
+#
+# iOS (Info.plist — LSApplicationQueriesSchemes if needed):
+#   - tel
+#   - mailto
+#   - whatsapp (optional, for canLaunchUrl checks)
+#
+# =============================================================================
+# 9. SETUP COMMANDS (AFTER CLONING FROM GITHUB)
+# =============================================================================
+#
+#   git clone <your-github-repo-url>
+#   cd wavego_driver
+#   flutter doctor -v
+#   flutter pub get
+#   flutter analyze
+#   flutter test
+#   flutter run
+#
+# Run on specific device:
+#   flutter devices
+#   flutter run -d chrome
+#   flutter run -d <device-id>
+#
+# =============================================================================
+# 10. BUILD COMMANDS (RELEASE)
+# =============================================================================
+#
+# Android APK:
+#   flutter build apk --release
+#
+# Android App Bundle (Play Store):
+#   flutter build appbundle --release
+#
+# iOS (macOS + Xcode required):
+#   flutter build ios --release
+#
+# Web:
+#   flutter build web --release
+#
+# macOS:
+#   flutter build macos --release
+#
+# Windows:
+#   flutter build windows --release
+#
+# Linux:
+#   flutter build linux --release
+#
+# =============================================================================
+# 11. GITHUB UPLOAD CHECKLIST
+# =============================================================================
+#
+# [ ] Initialize git: git init
+# [ ] Add remote: git remote add origin https://github.com/<user>/wavego_driver.git
+# [ ] Verify .gitignore excludes build/ and .dart_tool/
+# [ ] Commit pubspec.yaml AND pubspec.lock
+# [ ] Commit lib/, android/, ios/, web/, test/, analysis_options.yaml
+# [ ] Commit README.md and requirements.txt
+# [ ] Do NOT commit build/, .dart_tool/, secrets, keystores
+# [ ] Push: git push -u origin main
+#
+# Optional GitHub additions:
+# [ ] Add LICENSE file
+# [ ] Add CONTRIBUTING.md
+# [ ] Add GitHub Actions CI (.github/workflows/flutter.yml)
+# [ ] Add issue templates / pull request template
+#
+# =============================================================================
+# 12. OPTIONAL BUT USEFUL TOOLS (NOT IN pubspec YET)
+# =============================================================================
+#
+# For future backend integration (not currently installed):
+#   dio                 — HTTP client
+#   flutter_riverpod    — state management
+#   go_router           — declarative routing
+#   shared_preferences  — local storage
+#   flutter_secure_storage — token storage
+#   firebase_core       — if Firebase added later
+#   google_maps_flutter — real maps (currently dummy map UI)
+#   geolocator          — GPS location
+#   permission_handler  — runtime permissions
+#   intl                — date/currency formatting
+#   json_serializable   — JSON models
+#   build_runner        — code generation
+#
+# CI/CD:
+#   GitHub Actions with flutter-action
+#   Codemagic / Fastlane for store deployment
+#
+# Code quality:
+#   flutter analyze
+#   dart format .
+#   flutter test --coverage
+#
+# =============================================================================
+# 13. PROJECT STRUCTURE (REFERENCE)
+# =============================================================================
+#
+# lib/
+#   main.dart
+#   core/
+#     constants/   app_colors.dart, support_contacts.dart
+#     theme/       app_theme.dart
+#     utils/       contact_launcher.dart
+#     widgets/     glass_card, custom_button, stat_card, info_tile,
+#                  section_header, floating_nav_bar, support_contact_cards
+#   features/
+#     splash/           splash_screen.dart
+#     onboarding/       onboarding_screen.dart
+#     contact/          contact_verification_screen.dart
+#     auth/             login_screen.dart, otp_screen.dart
+#     verification/     verification_screen.dart
+#     home/             home_screen.dart
+#     trips/            trip_request, active_trip, trip_complete, trips_history
+#     earnings/         earnings_screen.dart
+#     wallet/           wallet_screen.dart
+#     profile/          profile, documents, settings, help_support
+#
+# =============================================================================
+# 14. APP FLOW (REFERENCE)
+# =============================================================================
+#
+# Splash → Onboarding → Contact Verification → Login → OTP → KYC → Home
+# Home tabs: Dashboard | Trips History | Earnings | Profile
+# Ride flow: Dashboard → Trip Request → Active Trip → Complete → Home
+#
+# =============================================================================
+# END OF REQUIREMENTS
+# =============================================================================
