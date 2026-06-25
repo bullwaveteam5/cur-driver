@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/widgets/custom_button.dart';
 import '../../core/widgets/glass_card.dart';
+import '../../core/widgets/support_contact_cards.dart';
 import '../home/home_screen.dart';
 
 enum DocStatus { verified, pending, upload }
@@ -119,6 +120,25 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       ),
                       const SizedBox(height: 16),
                       ..._docs.map(_buildDocTile),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Need help verifying?',
+                        style: TextStyle(
+                          color: AppColors.text,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      const Text(
+                        'Contact our team — WhatsApp is fastest for document review.',
+                        style: TextStyle(
+                          color: AppColors.subText,
+                          fontSize: 13,
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      const SupportContactCards(compact: true),
                     ],
                   ),
                 ),

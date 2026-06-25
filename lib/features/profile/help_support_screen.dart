@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_colors.dart';
+import '../../core/constants/support_contacts.dart';
 import '../../core/widgets/custom_button.dart';
 import '../../core/widgets/glass_card.dart';
 import '../../core/widgets/section_header.dart';
+import '../../core/widgets/support_contact_cards.dart';
 
 class HelpSupportScreen extends StatelessWidget {
   const HelpSupportScreen({super.key});
@@ -94,37 +96,8 @@ class HelpSupportScreen extends StatelessWidget {
               const SizedBox(height: 24),
               const SectionHeader(title: 'Contact Us'),
               const SizedBox(height: 14),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildContactCard(
-                      icon: Icons.call_rounded,
-                      title: 'Call Us',
-                      subtitle: '1800-123-456',
-                      color: AppColors.success,
-                      onTap: () => _showSnack(context, 'Calling support...'),
-                    ),
-                  ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: _buildContactCard(
-                      icon: Icons.chat_bubble_rounded,
-                      title: 'Live Chat',
-                      subtitle: 'Chat now',
-                      color: AppColors.accent,
-                      onTap: () => _showSnack(context, 'Opening live chat...'),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 14),
-              _buildContactCard(
-                icon: Icons.email_rounded,
-                title: 'Email Support',
-                subtitle: 'support@wavego.com',
-                color: AppColors.warning,
-                fullWidth: true,
-                onTap: () => _showSnack(context, 'Opening email app...'),
+              const SupportContactCards(
+                whatsappMessage: SupportContacts.generalSupportMessage,
               ),
               const SizedBox(height: 26),
               const SectionHeader(title: 'Frequently Asked'),
@@ -139,58 +112,6 @@ class HelpSupportScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildContactCard({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required Color color,
-    required VoidCallback onTap,
-    bool fullWidth = false,
-  }) {
-    return GlassCard(
-      padding: const EdgeInsets.all(16),
-      blur: false,
-      onTap: onTap,
-      child: Row(
-        mainAxisAlignment:
-            fullWidth ? MainAxisAlignment.start : MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 42,
-            height: 42,
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.16),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(icon, color: color, size: 20),
-          ),
-          const SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  color: AppColors.text,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                subtitle,
-                style: const TextStyle(
-                  color: AppColors.muted,
-                  fontSize: 12,
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

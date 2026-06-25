@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/widgets/custom_button.dart';
-import '../auth/login_screen.dart';
+import '../contact/contact_verification_screen.dart';
 
 class _OnboardPage {
   const _OnboardPage({
@@ -66,15 +66,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     super.dispose();
   }
 
-  void _goToLogin() {
+  void _goToContact() {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const LoginScreen()),
+      MaterialPageRoute(builder: (_) => const ContactVerificationScreen()),
     );
   }
 
   void _next() {
     if (_isLast) {
-      _goToLogin();
+      _goToContact();
     } else {
       _controller.nextPage(
         duration: const Duration(milliseconds: 400),
@@ -101,7 +101,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     opacity: _isLast ? 0 : 1,
                     duration: const Duration(milliseconds: 200),
                     child: TextButton(
-                      onPressed: _isLast ? null : _goToLogin,
+                      onPressed: _isLast ? null : _goToContact,
                       child: const Text('Skip'),
                     ),
                   ),
